@@ -1,0 +1,41 @@
+name: Release
+
+# Publica a extensão compilada quando uma tag de versão (v0.2.2, v0.3.0...) é enviada.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run zip
+
+      - name: Criar o Release com o ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          versao="${GITHUB_REF_NAME#v}"
+          cat > notas.md <<NOTAS
+          Extensão compilada para Chrome e Edge (Manifest V3).
+
+          1. Baixe \`elo-tiktok-${versao}-chrome.zip\` e extraia numa pasta permanente.
+          2. Abra \`chrome://extensions\` (ou \`edge://extensions\`), ative o **Modo do desenvolvedor** e clique em **Carregar sem compactação**.
+          3. Selecione a pasta onde está o \`manifest.json\`.
+
+          Instruções completas no [README](https://github.com/${GITHUB_REPOSITORY}#readme). Versão experimental.
+          NOTAS
+          gh release create "$GITHUB_REF_NAME" .output/*-chrome.zip --title "elo TikTok ${versao}" --notes-file notas.md
