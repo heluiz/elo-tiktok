@@ -1,0 +1,55 @@
+name: Relatar um problema
+description: Algo no elo TikTok não funcionou ou apareceu errado.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por avisar. Não cole cookies, tokens nem nada copiado do DevTools, e corte das capturas os nomes de usuário que você não quer mostrar.
+  - type: input
+    id: version
+    attributes:
+      label: Versão do elo TikTok
+      description: Aparece abaixo do nome do elo em chrome://extensions.
+      placeholder: "0.2.2"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador e versão
+      placeholder: "Chrome 141 no Windows 11"
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: Mais ou menos quantos perfis você segue?
+      options:
+        - Menos de 1.000
+        - De 1.000 a 10.000
+        - Mais de 10.000
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: O que aconteceu?
+      description: Inclua a mensagem que o elo mostrou, com as mesmas palavras, se puder.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: O que você esperava?
+  - type: textarea
+    id: steps
+    attributes:
+      label: Como fazer o problema acontecer de novo?
+      placeholder: |
+        1. Abra o TikTok
+        2. Clique no ícone do elo
+        3. ...
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Captura de tela
+      description: Opcional. Arraste uma imagem para cá.
