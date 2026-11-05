@@ -1,12 +1,20 @@
 name: Release
 
-# Publica a extensão compilada quando uma tag de versão (v0.2.2, v0.3.0...) é enviada.
+# Compila a extensão e anexa o ZIP ao Release.
+# Funciona de dois jeitos: publicando um Release pela página do GitHub
+# ou enviando uma tag de versão (v0.2.2, v0.3.0...).
 on:
+  release:
+    types: [published]
   push:
     tags: ['v*']
 
 permissions:
   contents: write
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   publicar:
@@ -24,18 +32,15 @@ jobs:
       - run: npm test
       - run: npm run zip
 
-      - name: Criar o Release com o ZIP
+      - name: Anexar o ZIP ao Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          versao="${GITHUB_REF_NAME#v}"
-          cat > notas.md <<NOTAS
-          Extensão compilada para Chrome e Edge (Manifest V3).
-
-          1. Baixe \`elo-tiktok-${versao}-chrome.zip\` e extraia numa pasta permanente.
-          2. Abra \`chrome://extensions\` (ou \`edge://extensions\`), ative o **Modo do desenvolvedor** e clique em **Carregar sem compactação**.
-          3. Selecione a pasta onde está o \`manifest.json\`.
-
-          Instruções completas no [README](https://github.com/${GITHUB_REPOSITORY}#readme). Versão experimental.
-          NOTAS
-          gh release create "$GITHUB_REF_NAME" .output/*-chrome.zip --title "elo TikTok ${versao}" --notes-file notas.md
+          tag="${GITHUB_REF_NAME}"
+          versao="${tag#v}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" .output/*-chrome.zip --clobber
+          else
+            gh release create "$tag" .output/*-chrome.zip --title "elo TikTok ${versao}" \
+              --notes "Extensão compilada para Chrome e Edge. Baixe o ZIP, extraia numa pasta e carregue em chrome://extensions com Carregar sem compactação. Instruções no README."
+          fi
