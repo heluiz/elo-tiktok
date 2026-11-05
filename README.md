@@ -1,12 +1,12 @@
 # elo TikTok 0.2.2
 
-Esta cópia contém somente o código-fonte, preparado para um futuro repositório privado. Não inclui o ZIP compilado mencionado abaixo. Para gerar a extensão, execute `npm ci` e `npm run build`; carregue `.output/chrome-mv3` na página de extensões. Nenhum repositório remoto foi criado nesta preparação.
+**Versão 0.2.2 · experimental · licença MIT.** A extensão pronta para instalar fica em [Releases](https://github.com/heluiz/elo-tiktok/releases/latest); este repositório contém o código-fonte.
 
 Extensão gratuita e de código aberto para Chrome e Edge no Windows. Lê quem você segue na sua própria conta já aberta no TikTok e permite revisar todos ou alguns desses perfis para deixar de seguir. A leitura e as ações pelo site são experimentais; seus dados ficam neste navegador.
 
 ## Instalar a extensão pronta
 
-1. Extraia o **ZIP da extensão compilada** para uma pasta que você possa manter no computador.
+1. Baixe o arquivo `elo-tiktok-0.2.2-chrome.zip` em [Releases](https://github.com/heluiz/elo-tiktok/releases/latest) e extraia o conteúdo para uma pasta que você possa manter no computador.
 2. Confira se `manifest.json` aparece diretamente nessa pasta, junto de `manager.html` e dos demais arquivos. Não tente carregar o ZIP sem extrair.
 3. Abra `chrome://extensions` no Chrome ou `edge://extensions` no Edge.
 4. Ative **Modo do desenvolvedor**.
@@ -118,7 +118,7 @@ O armazenamento é um IndexedDB próprio, separado do elo Instagram e de outros 
 
 ## Executar o código-fonte
 
-Na pasta do código-fonte, com Node.js compatível com as dependências (22.12 ou superior) e npm:
+Na pasta do repositório, com Node.js compatível com as dependências (22.12 ou superior) e npm:
 
 ```text
 npm ci

@@ -1,0 +1,38 @@
+name: Extensão
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: extensao-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run zip
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: elo-tiktok-chrome
+          path: .output/*-chrome.zip
+          if-no-files-found: error
+          # O WXT grava em .output/, que a action ignora por padrão por ser oculta.
+          include-hidden-files: true
