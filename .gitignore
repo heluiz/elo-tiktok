@@ -1,0 +1,13 @@
+node_modules/
+.wxt/
+.output/
+coverage/
+.tmp/
+.cache/
+.env
+.env.*
+*.zip
+*.log
+profile-*/
+ui-evidence*/
+connection-evidence*/
